@@ -1,0 +1,8 @@
+smtp_server_host: "smtp.gmail.com"
+smtp_server_port: 587 
+smtp_username: "me@gmail.com"
+smtp_password: "secret"
+from: "robot@gmail.com"
+to: 
+  - "me@gmail.com"
+  - "someone@gmail.com"

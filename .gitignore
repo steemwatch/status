@@ -22,3 +22,7 @@ _testmain.go
 *.exe
 *.test
 *.prof
+
+status
+
+notifier_email.config.yml

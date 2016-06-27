@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+  </head>
+	<body style="padding-top: 50px">
+
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <span class="navbar-brand">SteemWatch Status </span>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container" style="padding: 40px 15px">
+    
+    {{if systemOK .Sections}}
+      <div class="alert alert-success" style="margin-bottom: 40px" role="alert">
+        <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>
+        All systems operational
+      </div>
+    {{else}}
+      <div class="alert alert-danger" style="margin-bottom: 40px" role="alert">
+        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+        System outage detected, the tiger team was notified!
+      </div>
+    {{end}}
+
+    {{range .Sections}}
+      <div class="panel panel-{{sectionStyle .}}">
+        <div class="panel-heading">{{.Heading}}</div>
+        <div class="panel-body">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Description</th>
+                <th>Status</th>
+                <th>Details</th>
+                <th>Last Run</th>
+              </tr>
+            </thead>
+          {{range .Checks}}
+            <tr>
+              <td>{{.Description}}</td>
+              <td><span class="bg-{{resultToStyle .Result}}">{{.Result}}</span></td>
+              <td>{{.Details}}</td>
+              <td>{{delta .Timestamp}} ago</td>
+            </tr>
+          {{end}}
+          </table>
+        </div>
+      </div>
+    {{end}}
+	  </div>
+
+  </body>
+</html>
