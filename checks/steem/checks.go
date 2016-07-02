@@ -24,7 +24,7 @@ func (checker *connectionChecker) Check(interruptCh <-chan struct{}) (*checks.Ch
 	if err == nil {
 		return &checks.CheckSummary{
 			Result:  checks.CheckResultPassing,
-			Details: "hardfork version is " + version,
+			Details: "blockchain version is " + version,
 		}, nil
 	} else {
 		return &checks.CheckSummary{
@@ -41,7 +41,12 @@ func (checker *connectionChecker) doCheck(interruptCh <-chan struct{}) (string, 
 	}
 	defer client.Close()
 
-	return client.GetHardforkVersion()
+	config, err := client.GetConfig()
+	if err != nil {
+		return "", err
+	}
+
+	return config.SteemitBlockchainVersion, nil
 }
 
 func (checker *connectionChecker) Period() time.Duration {
