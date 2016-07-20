@@ -1,6 +1,7 @@
 package steemwatch
 
 import (
+	"net/url"
 	"time"
 
 	"github.com/steemwatch/status/checks"
@@ -13,7 +14,10 @@ type connectionChecker struct {
 	url string
 }
 
-func newConnectionChecker(steemwatchURL string) *connectionChecker {
+func mustNewConnectionChecker(steemwatchURL string) *connectionChecker {
+	if _, err := url.Parse(steemwatchURL); err != nil {
+		panic(err)
+	}
 	return &connectionChecker{steemwatchURL}
 }
 
