@@ -3,8 +3,10 @@ package steem
 import (
 	"time"
 
-	"github.com/go-steem/rpc"
 	"github.com/steemwatch/status/checks"
+
+	"github.com/go-steem/rpc"
+	"github.com/go-steem/rpc/transports/websocket"
 )
 
 type connectionChecker struct {
@@ -35,13 +37,15 @@ func (checker *connectionChecker) Check(interruptCh <-chan struct{}) (*checks.Ch
 }
 
 func (checker *connectionChecker) doCheck(interruptCh <-chan struct{}) (string, error) {
-	client, err := rpc.Dial(checker.endpointURL)
+	t, err := websocket.NewTransport(checker.endpointURL)
 	if err != nil {
 		return "", err
 	}
+
+	client := rpc.NewClient(t)
 	defer client.Close()
 
-	config, err := client.GetConfig()
+	config, err := client.Database.GetConfig()
 	if err != nil {
 		return "", err
 	}
